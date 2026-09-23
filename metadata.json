@@ -1,0 +1,6 @@
+{
+  "name": "DopMi",
+  "description": "Ayudar animales también puede sentirse ligero. Landing page de DopMi para adopción, guardianes y rescate de mascotas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
