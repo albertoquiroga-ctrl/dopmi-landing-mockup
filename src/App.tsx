@@ -257,7 +257,7 @@ export default function App() {
                 <button key={id} onClick={() => handleScrollTo(id)} className="hover:text-[#F6C94A] transition cursor-pointer">{label}</button>
               ))}
               <span className="hover:text-[#F6C94A] transition cursor-pointer">Centro de ayuda</span>
-              <a href="/pages/privacy-policy" className="hover:text-[#F6C94A] transition">Privacidad</a>
+              <a href="/privacy-policy" className="hover:text-[#F6C94A] transition">Privacidad</a>
               <span className="hover:text-[#F6C94A] transition cursor-pointer">Términos</span>
             </nav>
           </div>

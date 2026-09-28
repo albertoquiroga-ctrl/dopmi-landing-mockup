@@ -1,7 +1,14 @@
 {
-  "rewrites": [
+  "redirects": [
     {
       "source": "/pages/privacy-policy",
+      "destination": "/privacy-policy",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/privacy-policy",
       "destination": "/pages/privacy-policy/index.html"
     }
   ]
