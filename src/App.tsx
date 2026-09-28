@@ -258,7 +258,8 @@ export default function App() {
               ))}
               <span className="hover:text-[#F6C94A] transition cursor-pointer">Centro de ayuda</span>
               <a href="/privacy-policy" className="hover:text-[#F6C94A] transition">Privacidad</a>
-              <span className="hover:text-[#F6C94A] transition cursor-pointer">Términos</span>
+              <a href="/terms" className="hover:text-[#F6C94A] transition">Términos</a>
+              <a href="/delete-account" className="hover:text-[#F6C94A] transition">Eliminar cuenta</a>
             </nav>
           </div>
 

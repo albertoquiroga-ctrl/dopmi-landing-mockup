@@ -10,6 +10,14 @@
     {
       "source": "/privacy-policy",
       "destination": "/pages/privacy-policy/index.html"
+    },
+    {
+      "source": "/delete-account",
+      "destination": "/pages/delete-account/index.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/pages/terms/index.html"
     }
   ]
 }
