@@ -18,6 +18,10 @@
     {
       "source": "/terms",
       "destination": "/pages/terms/index.html"
+    },
+    {
+      "source": "/support",
+      "destination": "/pages/support/index.html"
     }
   ]
 }
