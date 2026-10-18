@@ -184,7 +184,7 @@
       <article>
         <span class="eyebrow">Aviso integral</span>
         <h1>Política de privacidad de Dopmi</h1>
-        <p class="meta">Última actualización: 28 de septiembre de 2026</p>
+        <p class="meta">Versión privacy-2026-10-17 · Fecha de esta versión: 17 de octubre de 2026</p>
 
         <div class="notice">
           Esta política aplica exclusivamente a la nueva aplicación móvil Dopmi para
@@ -232,6 +232,12 @@
               básicos de autenticación que Google o Apple comunican a Dopmi.
             </li>
             <li>
+              <strong>Comprobación de redes sociales:</strong> si eliges conectar una red disponible, Dopmi consulta el identificador y nombre de Facebook, o el identificador, nombre de usuario y tipo de cuenta profesional de Instagram. Conserva una prueba privada de conexión asociada a tu cuenta y su fecha de verificación. No es un acceso a Dopmi ni aprueba automáticamente un perfil público. Los permisos solicitados permiten consultar esos datos básicos de Facebook o de la cuenta profesional de Instagram; para esta comprobación no se solicitan publicaciones, seguidores o correo.
+            </li>
+            <li>
+              <strong>Confirmación de teléfono:</strong> número con código de país y código de confirmación para comprobar el teléfono de la misma cuenta mediante Supabase Auth. La app consulta el estado confirmado antes de mostrarlo como vinculado.
+            </li>
+            <li>
               <strong>Adopciones y perfiles públicos:</strong> fotografías,
               descripción, ciudad o zona general, historia, características y datos
               públicos del rescatista que hayan sido aprobados para publicación.
@@ -264,6 +270,9 @@
               domicilio exacto no se muestra públicamente.
             </li>
             <li>
+              <strong>Medición opcional:</strong> si la activas, eventos básicos de uso, como registro, contacto, envío de publicaciones e inicio o confirmación de aportaciones, para analítica; y errores y trazas técnicas para diagnóstico. Los eventos de producto definidos por Dopmi no adjuntan mensajes, documentos, ubicación, correo ni datos financieros.
+            </li>
+            <li>
               <strong>Datos técnicos y de seguridad:</strong> dirección IP,
               información básica del dispositivo o navegador, registros de acceso,
               errores y actividad necesaria para mantener la seguridad, prevenir
@@ -285,6 +294,7 @@
             <li>Operar los recorridos de adopción, favoritos y contacto.</li>
             <li>Permitir conversaciones privadas entre sus participantes.</li>
             <li>Revisar rescatistas, publicaciones, casos, gastos y evidencia.</li>
+            <li>Comprobar, cuando eliges esas funciones, el control de una red social disponible o de tu teléfono.</li>
             <li>Publicar únicamente contenido aprobado y moderar reportes.</li>
             <li>Procesar, conciliar y documentar aportaciones y sus estados.</li>
             <li>Atender soporte, solicitudes de privacidad, disputas y seguridad.</li>
@@ -293,10 +303,12 @@
           <h3>Finalidades opcionales</h3>
           <p>
             La ubicación aproximada se usa sólo si la autorizas para descubrir
-            contenido cercano. Cuando se habiliten mediciones de producto o reportes
-            de errores opcionales, se solicitará tu elección por separado y podrás
-            retirarla sin perder las funciones principales. Dopmi no usa tus datos
-            personales para publicidad dirigida ni los vende.
+            contenido cercano. La analítica de uso y el diagnóstico de errores son
+            opcionales, tienen elecciones separadas y permanecen apagados hasta que
+            los actives. Puedes cambiar o retirar cada elección desde Perfil →
+            Cuenta y privacidad → Privacidad y eliminación, sin perder las funciones
+            principales. Dopmi no usa tus datos personales para publicidad dirigida
+            ni los vende.
           </p>
         </section>
 
@@ -325,6 +337,9 @@
             <li><strong>Supabase:</strong> autenticación, base de datos, archivos y servicios del backend.</li>
             <li><strong>Stripe:</strong> flujos de pago, conciliación y Stripe Connect para rescatistas.</li>
             <li><strong>Google y Apple:</strong> autenticación cuando eliges una de esas opciones y está disponible.</li>
+            <li><strong>Facebook e Instagram (Meta):</strong> autorización y consulta de los datos descritos para comprobar una conexión social, cuando esa función esté disponible y decidas usarla. Puedes revisar sus propios controles de permisos.</li>
+            <li><strong>Twilio:</strong> entrega de SMS mediante la configuración de Supabase Auth acreditada en la configuración de pruebas comprobada. Esta descripción no afirma que sea el proveedor de otros entornos.</li>
+            <li><strong>Firebase (Google):</strong> Analytics para eventos de uso y Crashlytics para errores y trazas técnicas, conforme a tus elecciones separadas de medición. Estos servicios no sustituyen a Supabase como autenticación o base de datos del producto.</li>
             <li><strong>GoDaddy/Titan:</strong> recepción y atención del correo de soporte.</li>
             <li><strong>Vercel:</strong> alojamiento de esta página y registros técnicos de sus solicitudes web.</li>
           </ul>
@@ -340,6 +355,8 @@
 
         <section id="conservacion">
           <h2>7. Conservación y eliminación</h2>
+          <p>La comprobación social conectada se conserva separada de los intentos de conexión hasta que se retire o se elimine mediante el flujo aplicable. En la configuración de pruebas comprobada hay una limpieza periódica de intentos vencidos hace más de 24 horas y de comprobantes operacionales vencidos. Esta limpieza no elimina las comprobaciones vigentes ni las cuentas y no garantiza un plazo máximo de eliminación en todos los sistemas o respaldos.</p>
+          <p>La credencial temporal recibida de la red social se utiliza en el servidor para consultar esos datos y no se incluye en el comprobante privado de conexión que Dopmi guarda. Esto no describe su conservación en los sistemas del proveedor, registros técnicos o copias de respaldo.</p>
           <ul>
             <li>
               La cuenta y el perfil se conservan mientras la cuenta esté activa o
@@ -356,26 +373,29 @@
               investigar reportes o cumplir obligaciones.
             </li>
             <li>
-              La evidencia de pagos, devoluciones, disputas, prevención de fraude y
-              obligaciones fiscales se conserva únicamente durante los plazos
-              exigidos o permitidos por la normativa y después se elimina o disocia.
+              La conservación y eliminación de evidencia de pagos, devoluciones,
+              disputas, prevención de fraude y obligaciones fiscales requieren una
+              revisión por caso de las obligaciones aplicables; no se confirma su
+              eliminación automática al terminar un plazo.
             </li>
             <li>
-              Los documentos de verificación se conservan mientras son necesarios
-              para resolver la verificación, prevenir abuso o atender obligaciones;
-              posteriormente se eliminan o quedan bloqueados con acceso restringido.
+              Los documentos de verificación se mantienen separados del perfil
+              público y con acceso restringido. Su conservación y eliminación
+              requieren revisar las necesidades de verificación, prevención de abuso
+              y obligaciones aplicables a cada caso.
             </li>
             <li>
-              Los registros técnicos y copias de respaldo se depuran conforme a
-              ciclos operativos y de seguridad; una solicitud aplicada al sistema
-              principal puede tardar en desaparecer de respaldos protegidos hasta su
-              siguiente rotación.
+              El alcance de una solicitud sobre registros técnicos y copias de
+              respaldo requiere revisión específica. No hay un plazo general de
+              eliminación ni una rotación de respaldos acreditados por esta
+              descripción del servicio.
             </li>
           </ul>
           <p>
             Cuando una norma, una disputa o una obligación válida impida la supresión
-            inmediata, los datos quedan bloqueados y con acceso restringido, y se
-            eliminan al terminar el plazo aplicable.
+            inmediata, la conservación y las restricciones aplicables se revisan por
+            caso. La recepción de la solicitud o el transcurso de un plazo no son
+            confirmación de que todos los datos ya se hayan eliminado.
           </p>
         </section>
 
@@ -396,7 +416,7 @@
             <li>la información necesaria para verificar razonablemente tu identidad.</li>
           </ul>
           <p>
-            No envíes contraseñas ni datos completos de tarjeta. Si actúas mediante
+            No envíes contraseñas, códigos de acceso o SMS, documentos de identidad ni datos de pago por correo. El responsable de soporte coordinará la verificación por un canal privado antes de consultar o eliminar datos de una cuenta reclamada; un correo, nombre o identificador escrito no acredita por sí solo la titularidad. Si actúas mediante
             representante, solicitaremos acreditación de esa representación.
             Comunicaremos nuestra determinación en un máximo de veinte días hábiles
             desde que recibamos una solicitud completa. Si resulta procedente, la
@@ -412,8 +432,10 @@
           </p>
         </section>
 
+        <p>Consulta las <a href="/delete-account">instrucciones de eliminación</a> para la app actual y solicitudes sobre versiones anteriores o sin acceso. Si no puedes recuperar ningún acceso asociado a la cuenta, la solicitud queda pendiente para revisión por caso, sin dar por acreditada la titularidad ni por eliminado ningún dato. La política de esta nueva app no extiende automáticamente su flujo de eliminación a los archivos de versiones anteriores.</p>
         <section id="permisos">
           <h2>9. Permisos del dispositivo</h2>
+          <p>Desde Dopmi puedes retirar una comprobación social existente. Desconectar la prueba no elimina tu cuenta de Facebook o Instagram y puede no retirar su autorización: utiliza también los controles del proveedor. Una solicitud firmada de retirada recibida desde el proveedor retira la evidencia social; no equivale a eliminar toda tu cuenta o datos de Dopmi.</p>
           <ul>
             <li>
               <strong>Cámara, fotos y archivos:</strong> se solicitan cuando decides
@@ -468,3 +490,4 @@
     </footer>
   </body>
 </html>
+
