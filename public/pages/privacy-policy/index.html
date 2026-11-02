@@ -184,7 +184,7 @@
       <article>
         <span class="eyebrow">Aviso integral</span>
         <h1>Política de privacidad de Dopmi</h1>
-        <p class="meta">Versión privacy-live-2026-11-01-ubicacion · Fecha de esta versión: 1 de noviembre de 2026</p>
+        <p class="meta">Versión privacy-live-2026-11-01-ubicacion-precisa · Fecha de esta versión: 1 de noviembre de 2026</p>
 
         <div class="notice">
           Esta política aplica exclusivamente a la nueva aplicación móvil Dopmi para
@@ -265,7 +265,7 @@
               proveedor de pagos y no se almacenan directamente en Dopmi.
             </li>
             <li>
-              <strong>Ubicación:</strong> ciudad y estado de la zona que eliges para una mascota y, sólo si lo autorizas mientras usas la app, tu ubicación aproximada para encontrar adopciones cercanas. Dopmi conserva la ubicación de la mascota redondeada a dos decimales; tu ubicación de búsqueda permanece sólo en la sesión de la app. No se publica un domicilio exacto ni se realiza seguimiento en segundo plano.
+              <strong>Ubicación:</strong> sólo si lo autorizas mientras usas la app, Dopmi utiliza tu ubicación precisa actual para encontrar adopciones a 20 km. Esta ubicación de búsqueda permanece sólo en memoria de la app y se envía para calcular cercanía, sin guardarse en tu perfil. En modo Rescatista, si autorizas el acceso, tu ubicación precisa actual también se conserva sólo en memoria y se propone como ubicación inicial de las nuevas mascotas que publiques. Puedes cambiar ese punto en el mapa o elegirlo manualmente sin dar permiso. Dopmi guarda el punto preciso de la mascota de forma privada para calcular distancias; públicamente se muestran ciudad y estado. No se publica el punto exacto ni se realiza seguimiento en segundo plano.
             </li>
             <li>
               <strong>Medición opcional:</strong> si la activas, eventos básicos de uso, como registro, contacto, envío de publicaciones e inicio o confirmación de aportaciones, para analítica; y errores y trazas técnicas para diagnóstico. Los eventos de producto definidos por Dopmi no adjuntan mensajes, documentos, ubicación, correo ni datos financieros.
@@ -300,8 +300,11 @@
           </ul>
           <h3>Finalidades opcionales</h3>
           <p>
-            La ubicación aproximada se usa sólo si la autorizas para descubrir
-            contenido cercano. La analítica de uso y el diagnóstico de errores son
+            La ubicación precisa se usa sólo si la autorizas para descubrir
+            adopciones cercanas o centrar el mapa al publicar. Si no autorizas la ubicación
+            o está apagada, el listado de adopciones queda vacío y los demás apartados
+            siguen disponibles. Para una publicación puedes colocar el punto manualmente.
+            La analítica de uso y el diagnóstico de errores son
             opcionales, tienen elecciones separadas y permanecen apagados hasta que
             los actives. Puedes cambiar o retirar cada elección desde Perfil →
             Cuenta y privacidad → Privacidad y eliminación, sin perder las funciones
@@ -336,7 +339,7 @@
             <li><strong>Stripe:</strong> flujos de pago, conciliación y Stripe Connect para rescatistas.</li>
             <li>Cuando los videos estén habilitados, <strong>Cloudflare Stream</strong> se utilizará para la carga, el procesamiento y la reproducción de videos y sus pósters. Los videos y pósters requieren moderación y aprobación antes de publicarse. Los comprobantes y las evidencias privados conservan el acceso autorizado.</li>
             <li><strong>Google y Apple:</strong> autenticación cuando eliges una de esas opciones y está disponible.</li>
-            <li><strong>Mapas y búsqueda de zonas:</strong> Google Maps muestra el mapa interactivo cuando lo abres y puede recibir datos de la vista del mapa, tu consulta, dirección IP e información técnica conforme a sus políticas. Para identificar ciudad y estado también se utiliza la geocodificación del dispositivo, proporcionada por Google o Apple. Dopmi envía coordenadas aproximadas para esas consultas y no incorpora mensajes, documentos ni datos financieros. Puedes elegir una zona manualmente sin activar el GPS.</li>
+            <li><strong>Mapas y búsqueda de zonas:</strong> Google Maps muestra el mapa interactivo cuando lo abres y puede recibir el punto preciso, la vista del mapa, tu consulta, dirección IP e información técnica conforme a sus políticas. Para identificar ciudad y estado también se utiliza la geocodificación del dispositivo, proporcionada por Google o Apple, que recibe el punto seleccionado. Estas consultas no incorporan mensajes, documentos ni datos financieros. Al publicar puedes colocar el punto manualmente sin activar el GPS.</li>
             <li><strong>Facebook e Instagram (Meta):</strong> autorización y consulta de los datos descritos para comprobar una conexión social, cuando esa función esté disponible y decidas usarla. Puedes revisar sus propios controles de permisos.</li>
             <li><strong>Twilio:</strong> entrega de SMS mediante la configuración de Supabase Auth acreditada en la configuración de pruebas comprobada. Esta descripción no afirma que sea el proveedor de otros entornos.</li>
             <li><strong>Firebase (Google):</strong> Analytics para eventos de uso y Crashlytics para errores y trazas técnicas, conforme a tus elecciones separadas de medición. Estos servicios no sustituyen a Supabase como autenticación o base de datos del producto.</li>
@@ -443,7 +446,7 @@
               caso, evidencia o mensaje.
             </li>
             <li>
-              <strong>Ubicación:</strong> se ofrece al entrar para encontrar adopciones cercanas y cuando eliges la zona de una mascota. Sólo se consulta mientras usas la app. Puedes negar el GPS, elegir una zona manualmente en el mapa o continuar sin búsqueda por cercanía.
+              <strong>Ubicación:</strong> en modo Adoptar se explica su uso antes de solicitar el permiso del sistema para acceder a tu ubicación precisa actual y encontrar mascotas a 20 km. Si lo rechazas, se ofrece «Activar ubicación» con el listado de adopciones vacío; los demás apartados siguen disponibles. En modo Rescatista también se ofrece al entrar, con una explicación para encontrar adoptantes cercanos y proponer la ubicación inicial de una mascota nueva. Aceptar esa explicación permite solicitar el permiso del sistema si hace falta; rechazarlo no bloquea el modo Rescatista ni la selección manual. La sugerencia es editable y no sustituye ubicaciones ya guardadas ni cambios manuales. Sólo se consulta mientras usas la app; puedes cambiar el permiso en los ajustes del dispositivo.
             </li>
           </ul>
           <p>
