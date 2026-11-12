@@ -8,6 +8,14 @@
   ],
   "rewrites": [
     {
+      "source": "/descargar",
+      "destination": "/api/descargar?variant=untracked"
+    },
+    {
+      "source": "/descargar/:variant(personal-a|personal-b|pagina-a|pagina-b)",
+      "destination": "/api/descargar?variant=:variant"
+    },
+    {
       "source": "/privacy-policy",
       "destination": "/pages/privacy-policy/index.html"
     },
