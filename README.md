@@ -16,6 +16,8 @@ npm run lint
 npm run build
 ```
 
-En Vercel, importa este repositorio como proyecto Vite. Usa `npm run build` como Build Command y `dist` como Output Directory. No se necesitan variables de entorno para esta versión.
+En Vercel, importa este repositorio como proyecto Vite. Usa `npm run build` como Build Command y `dist` como Output Directory.
+
+La ficha para compartir en `/adoptions/:id` requiere `DOPMI_SUPABASE_PUBLISHABLE_KEY` en el servidor. Usa la clave publicable de Supabase de DopMi Producción. La función vuelve a consultar el estado publicado al cargar la ficha y la foto. Ejecuta las pruebas de las funciones con `node --test`.
 
 Antes de conectar `dopmi.org`, revisar los enlaces a App Store/Google Play, los casos de ejemplo y las páginas de privacidad y términos.

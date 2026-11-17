@@ -8,6 +8,14 @@
   ],
   "rewrites": [
     {
+      "source": "/adoptions/:id/cover.jpg",
+      "destination": "/api/adoption-share?id=:id&asset=cover"
+    },
+    {
+      "source": "/adoptions/:id",
+      "destination": "/api/adoption-share?id=:id"
+    },
+    {
       "source": "/descargar",
       "destination": "/api/descargar?variant=untracked"
     },
