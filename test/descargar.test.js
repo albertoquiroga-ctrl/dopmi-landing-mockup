@@ -27,19 +27,35 @@ function request(path, agent, { headers, ...options } = {}) {
   });
 }
 
-test('plain Android links bypass the picker and carry no campaign, even with supplied query values', async () => {
+function linksIn(page) {
+  return [...page.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>/g)]
+    .map((match) => ({ href: match[1].replaceAll('&amp;', '&'), text: match[2] }));
+}
+
+test('plain Android links open Play by gesture and carry no campaign, even with supplied query values', async () => {
   const response = await request('/descargar?variant=pagina-b&fbclid=facebook-id', android);
-  assert.equal(response.status, 302);
-  assert.equal(response.headers.get('location'), play);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('location'), null);
   assert.equal(response.headers.get('cache-control'), 'no-store');
   assert.equal(response.headers.get('referrer-policy'), 'no-referrer');
+  const links = linksIn(await response.text());
+  assert.equal(links[0].text, 'Abrir Google Play');
+  assert.equal(links[0].href, `intent://play.google.com/store/apps/details?id=com.mycompany.dopmi#Intent;scheme=https;action=android.intent.action.VIEW;package=com.android.vending;S.browser_fallback_url=${encodeURIComponent(play)};end`);
+  assert.deepEqual(links[1], { href: play, text: 'Ver en el navegador' });
 });
 
-test('all four Android variants carry only their expected campaign fields', async () => {
+test('all four Android native intents and HTTPS fallbacks preserve the exact campaign', async () => {
   for (const variant of ['personal-a', 'personal-b', 'pagina-a', 'pagina-b']) {
     const response = await request(`/descargar/${variant}?variant=unrelated&url=https://example.com`, android);
-    assert.equal(response.status, 302);
-    const location = new URL(response.headers.get('location'));
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('location'), null);
+    const [native, web] = linksIn(await response.text());
+    assert.equal(native.text, 'Abrir Google Play');
+    const [nativeUrl, intent] = native.href.split('#Intent;');
+    assert.match(intent, /^scheme=https;action=android\.intent\.action\.VIEW;package=com\.android\.vending;/);
+    const fallback = intent.match(/(?:^|;)S\.browser_fallback_url=([^;]+);end$/);
+    assert.ok(fallback);
+    const location = new URL(nativeUrl.replace(/^intent:/, 'https:'));
     assert.equal(location.origin, 'https://play.google.com');
     assert.equal(location.searchParams.get('id'), 'com.mycompany.dopmi');
     assert.deepEqual(Object.fromEntries(new URLSearchParams(location.searchParams.get('referrer'))), {
@@ -49,7 +65,23 @@ test('all four Android variants carry only their expected campaign fields', asyn
       utm_content: variant,
     });
     assert.deepEqual([...location.searchParams.keys()], ['id', 'referrer']);
+    assert.equal(decodeURIComponent(fallback[1]), location.href);
+    assert.deepEqual(web, { href: location.href, text: 'Ver en el navegador' });
   }
+});
+
+test('typed Android navigation presents an anchor instead of an automatic intent redirect', async () => {
+  // Chrome refuses intent redirects from typed URLs or without a user gesture.
+  // https://developer.chrome.com/docs/android/intents#considerations
+  const response = await request('/descargar/personal-a', android, {
+    headers: { 'Sec-Fetch-Site': 'none', 'Sec-Fetch-User': '?1' },
+  });
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('location'), null);
+  const page = await response.text();
+  assert.match(page, /<a href="intent:[^"]+">Abrir Google Play<\/a>/);
+  assert.doesNotMatch(page, /<script|http-equiv=["']refresh|window\.location|setTimeout/i);
+  assert.match(response.headers.get('content-security-policy'), /default-src 'none'/);
 });
 
 test('iPhone and iPad open the verified Mexican App Store listing', async () => {
@@ -63,7 +95,8 @@ test('iPhone and iPad open the verified Mexican App Store listing', async () => 
 test('explicit platform hints can identify mobile devices when the UA is reduced', async () => {
   const google = await request('/descargar', 'Mozilla/5.0', { headers: { 'Sec-CH-UA-Platform': '"Android"' } });
   const ios = await request('/descargar', 'Mozilla/5.0', { headers: { 'Sec-CH-UA-Platform': '"iOS"' } });
-  assert.equal(google.headers.get('location'), play);
+  assert.equal(google.status, 200);
+  assert.equal(linksIn(await google.text())[1].href, play);
   assert.equal(ios.headers.get('location'), apple);
 });
 
@@ -85,6 +118,7 @@ test('desktop, social crawlers and ambiguous mobile signals get both accessible 
     assert.match(page, /property="og:url" content="https:\/\/www\.dopmi\.org\/descargar\/personal-a"/);
     assert.match(page, /play\.google\.com\/store\/apps\/details\?id=com\.mycompany\.dopmi&amp;referrer=/);
     assert.ok(page.includes(apple));
+    assert.equal(linksIn(page).some((link) => link.href.startsWith('intent:')), false);
   }
 });
 
@@ -92,10 +126,12 @@ test('internal rewrite requests accept known variants and discard unrecognized v
   const tagged = await request('/api/descargar?variant=pagina-b', android);
   const untracked = await request('/api/descargar?variant=untracked', android);
   const attemptedRedirect = await request('/api/descargar?variant=https://evil.example&destination=https://evil.example', android);
-  const referrer = new URL(tagged.headers.get('location')).searchParams.get('referrer');
+  const referrer = new URL(linksIn(await tagged.text())[1].href).searchParams.get('referrer');
   assert.equal(new URLSearchParams(referrer).get('utm_content'), 'pagina-b');
-  assert.equal(untracked.headers.get('location'), play);
-  assert.equal(attemptedRedirect.headers.get('location'), play);
+  assert.equal(linksIn(await untracked.text())[1].href, play);
+  const attemptedPage = await attemptedRedirect.text();
+  assert.equal(linksIn(attemptedPage)[1].href, play);
+  assert.doesNotMatch(attemptedPage, /evil\.example/);
 });
 
 test('HEAD sends metadata without a body and other methods return 405', async () => {

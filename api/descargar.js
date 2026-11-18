@@ -38,9 +38,21 @@ function playStoreFor(variant) {
   return store.href;
 }
 
-function downloadPage(google, variant) {
+function playStoreIntent(google) {
+  return `${google.replace(/^https:/, 'intent:')}#Intent;scheme=https;action=android.intent.action.VIEW;package=com.android.vending;S.browser_fallback_url=${encodeURIComponent(google)};end`;
+}
+
+function downloadPage(google, variant, platform) {
   const pageUrl = `${site}/descargar${variant ? `/${variant}` : ''}`;
   const description = 'Descarga DopMi para publicar mascotas en adopción.';
+  const android = platform === 'android';
+  // Chrome needs a user gesture, including when this URL was typed directly.
+  // https://developer.chrome.com/docs/android/intents#considerations
+  const links = android
+    ? `<a href="${playStoreIntent(google).replaceAll('&', '&amp;')}">Abrir Google Play</a>
+      <a class="secondary" href="${google.replaceAll('&', '&amp;')}">Ver en el navegador</a>`
+    : `<a href="${google.replaceAll('&', '&amp;')}">Google Play para Android</a>
+      <a href="${appStore}">App Store para iPhone y iPad</a>`;
   return `<!doctype html>
 <html lang="es-MX">
 <head>
@@ -61,16 +73,16 @@ function downloadPage(google, variant) {
     p { margin: .5rem 0 1.25rem; color: #505050; }
     nav { display: grid; gap: .75rem; }
     a { display: block; padding: .75rem 1rem; border: 1px solid #161616; border-radius: .8rem; color: #161616; background: #f6c94a; text-decoration: none; font-weight: 650; }
+    a.secondary { background: white; font-weight: 500; }
     a:focus-visible { outline: 3px solid #5b3fff; outline-offset: 3px; }
   </style>
 </head>
 <body>
   <main>
     <h1>Descarga DopMi</h1>
-    <p>Elige la tienda de tu celular.</p>
+    <p>${android ? 'Abre Google Play para instalar DopMi.' : 'Elige la tienda de tu celular.'}</p>
     <nav aria-label="Tiendas de aplicaciones">
-      <a href="${google.replaceAll('&', '&amp;')}">Google Play para Android</a>
-      <a href="${appStore}">App Store para iPhone y iPad</a>
+      ${links}
     </nav>
   </main>
 </body>
@@ -91,8 +103,8 @@ export default function handler(request, response) {
   const variant = variantFrom(request);
   const google = playStoreFor(variant);
   const platform = device(request.headers);
-  if (platform) {
-    response.setHeader('Location', platform === 'android' ? google : appStore);
+  if (platform === 'ios') {
+    response.setHeader('Location', appStore);
     response.statusCode = 302;
     return response.end();
   }
@@ -101,5 +113,5 @@ export default function handler(request, response) {
   response.setHeader('Content-Security-Policy', "default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'");
   response.setHeader('X-Content-Type-Options', 'nosniff');
   response.statusCode = 200;
-  return response.end(request.method === 'HEAD' ? undefined : downloadPage(google, variant));
+  return response.end(request.method === 'HEAD' ? undefined : downloadPage(google, variant, platform));
 }
