@@ -40,7 +40,7 @@ test('plain Android links open Play by gesture and carry no campaign, even with 
   assert.equal(response.headers.get('referrer-policy'), 'no-referrer');
   const links = linksIn(await response.text());
   assert.equal(links[0].text, 'Abrir Google Play');
-  assert.equal(links[0].href, `intent://play.google.com/store/apps/details?id=com.mycompany.dopmi#Intent;scheme=https;action=android.intent.action.VIEW;package=com.android.vending;S.browser_fallback_url=${encodeURIComponent(play)};end`);
+  assert.equal(links[0].href, `intent://details?id=com.mycompany.dopmi#Intent;scheme=market;action=android.intent.action.VIEW;package=com.android.vending;S.browser_fallback_url=${encodeURIComponent(play)};end`);
   assert.deepEqual(links[1], { href: play, text: 'Ver en el navegador' });
 });
 
@@ -52,11 +52,13 @@ test('all four Android native intents and HTTPS fallbacks preserve the exact cam
     const [native, web] = linksIn(await response.text());
     assert.equal(native.text, 'Abrir Google Play');
     const [nativeUrl, intent] = native.href.split('#Intent;');
-    assert.match(intent, /^scheme=https;action=android\.intent\.action\.VIEW;package=com\.android\.vending;/);
+    assert.match(intent, /^scheme=market;action=android\.intent\.action\.VIEW;package=com\.android\.vending;/);
     const fallback = intent.match(/(?:^|;)S\.browser_fallback_url=([^;]+);end$/);
     assert.ok(fallback);
-    const location = new URL(nativeUrl.replace(/^intent:/, 'https:'));
-    assert.equal(location.origin, 'https://play.google.com');
+    const location = new URL(nativeUrl);
+    assert.equal(location.protocol, 'intent:');
+    assert.equal(location.host, 'details');
+    assert.equal(location.pathname, '');
     assert.equal(location.searchParams.get('id'), 'com.mycompany.dopmi');
     assert.deepEqual(Object.fromEntries(new URLSearchParams(location.searchParams.get('referrer'))), {
       utm_source: 'facebook',
@@ -65,8 +67,11 @@ test('all four Android native intents and HTTPS fallbacks preserve the exact cam
       utm_content: variant,
     });
     assert.deepEqual([...location.searchParams.keys()], ['id', 'referrer']);
-    assert.equal(decodeURIComponent(fallback[1]), location.href);
-    assert.deepEqual(web, { href: location.href, text: 'Ver en el navegador' });
+    const fallbackUrl = new URL(decodeURIComponent(fallback[1]));
+    assert.equal(fallbackUrl.origin, 'https://play.google.com');
+    assert.equal(fallbackUrl.pathname, '/store/apps/details');
+    assert.equal(fallbackUrl.search, location.search);
+    assert.deepEqual(web, { href: fallbackUrl.href, text: 'Ver en el navegador' });
   }
 });
 

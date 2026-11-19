@@ -39,7 +39,7 @@ function playStoreFor(variant) {
 }
 
 function playStoreIntent(google) {
-  return `${google.replace(/^https:/, 'intent:')}#Intent;scheme=https;action=android.intent.action.VIEW;package=com.android.vending;S.browser_fallback_url=${encodeURIComponent(google)};end`;
+  return `intent://details${new URL(google).search}#Intent;scheme=market;action=android.intent.action.VIEW;package=com.android.vending;S.browser_fallback_url=${encodeURIComponent(google)};end`;
 }
 
 function downloadPage(google, variant, platform) {
