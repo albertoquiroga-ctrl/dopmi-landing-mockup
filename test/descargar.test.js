@@ -37,7 +37,7 @@ test('plain Android links open Play by gesture and carry no campaign, even with 
   assert.equal(response.status, 200);
   assert.equal(response.headers.get('location'), null);
   assert.equal(response.headers.get('cache-control'), 'no-store');
-  assert.equal(response.headers.get('referrer-policy'), 'no-referrer');
+  assert.equal(response.headers.get('referrer-policy'), 'strict-origin-when-cross-origin');
   const links = linksIn(await response.text());
   assert.equal(links[0].text, 'Abrir Google Play');
   assert.equal(links[0].href, `intent://play.google.com/store/apps/details?id=com.mycompany.dopmi#Intent;scheme=https;action=android.intent.action.VIEW;package=com.android.vending;S.browser_fallback_url=${encodeURIComponent(play)};end`);

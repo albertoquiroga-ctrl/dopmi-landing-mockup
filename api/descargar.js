@@ -92,7 +92,7 @@ function downloadPage(google, variant, platform) {
 export default function handler(request, response) {
   response.setHeader('Cache-Control', 'no-store');
   response.setHeader('Vary', 'User-Agent, Sec-CH-UA-Platform, Purpose, Sec-Purpose');
-  response.setHeader('Referrer-Policy', 'no-referrer');
+  response.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
 
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     response.setHeader('Allow', 'GET, HEAD');
