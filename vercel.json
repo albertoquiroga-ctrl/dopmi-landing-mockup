@@ -28,6 +28,10 @@
       "destination": "/api/descargar?variant=untracked"
     },
     {
+      "source": "/descargar/piloto/:placement([a-f0-9]{32})",
+      "destination": "/api/descargar?placement=:placement"
+    },
+    {
       "source": "/descargar/:variant(personal-a|personal-b|pagina-a|pagina-b)",
       "destination": "/api/descargar?variant=:variant"
     },

@@ -1,3 +1,7 @@
+import { readFileSync } from 'node:fs';
+
+const pilot = JSON.parse(readFileSync(new URL('../config/rescuer-pilot-60-v1.json', import.meta.url), 'utf8'));
+const pilotPlacements = new Map(pilot.placements.map((placement) => [placement.token, placement]));
 const site = 'https://www.dopmi.org';
 const appStore = 'https://apps.apple.com/mx/app/dopmi/id6468691532';
 const playStore = 'https://play.google.com/store/apps/details?id=com.mycompany.dopmi';
@@ -32,14 +36,28 @@ function variantFrom(request) {
   return variants.has(candidate) ? candidate : null;
 }
 
-function playStoreFor(variant) {
+function pilotFrom(request) {
+  const url = new URL(request.url, site);
+  if (url.pathname === '/api/descargar') {
+    const queryTokens = url.searchParams.getAll('placement');
+    const rewritten = request.query?.placement;
+    if (rewritten === undefined && queryTokens.length === 0) return null;
+    const token = rewritten ?? queryTokens[0];
+    return { placement: queryTokens.length <= 1 && typeof token === 'string' ? pilotPlacements.get(token) : undefined };
+  }
+  if (url.pathname !== '/descargar/piloto' && !url.pathname.startsWith('/descargar/piloto/')) return null;
+  const token = url.pathname.match(/^\/descargar\/piloto\/([a-f0-9]{32})\/?$/)?.[1];
+  return { placement: pilotPlacements.get(token) };
+}
+
+function playStoreFor(variant, placement) {
   if (!variant) return playStore;
   const store = new URL(playStore);
   store.searchParams.set('referrer', new URLSearchParams({
     utm_source: 'facebook',
     utm_medium: 'organic_comment',
-    utm_campaign: `dopmi_rescatistas_mty_${variant}`,
-    utm_content: variant,
+    utm_campaign: placement ? pilot.utmCampaign : `dopmi_rescatistas_mty_${variant}`,
+    utm_content: placement ? placement.token : variant,
   }).toString());
   return store.href;
 }
@@ -48,8 +66,10 @@ function playStoreIntent(google) {
   return `${google.replace(/^https:/, 'intent:')}#Intent;scheme=https;action=android.intent.action.VIEW;package=com.android.vending;S.browser_fallback_url=${encodeURIComponent(google)};end`;
 }
 
-function appStoreFor(variant) {
-  const campaign = appleCampaigns.get(variant);
+function appStoreFor(variant, placement) {
+  const campaign = placement
+    ? `resc_mty_p60_v1_${placement.armId.toLowerCase()}${placement.isQa ? '_qa' : ''}`
+    : appleCampaigns.get(variant);
   const provider = process.env.APPLE_CAMPAIGN_PROVIDER_TOKEN;
   if (!campaign || typeof provider !== 'string' || !/^[1-9][0-9]{0,19}$/.test(provider)) return appStore;
   // App Store Connect reports aggregate campaign downloads and Apple usage.
@@ -61,8 +81,10 @@ function appStoreFor(variant) {
   return store.href;
 }
 
-function downloadPage(google, apple, variant, platform) {
-  const pageUrl = `${site}/descargar${variant ? `/${variant}` : ''}`;
+function downloadPage(google, apple, variant, platform, placement) {
+  const pageUrl = placement
+    ? `${site}/descargar/piloto/${placement.token}`
+    : `${site}/descargar${variant ? `/${variant}` : ''}`;
   const description = 'Descarga DopMi para publicar mascotas en adopción.';
   const android = platform === 'android';
   // Chrome needs a user gesture, including when this URL was typed directly.
@@ -119,9 +141,18 @@ export default function handler(request, response) {
     return response.end();
   }
 
-  const variant = variantFrom(request);
-  const google = playStoreFor(variant);
-  const apple = appStoreFor(variant);
+  const pilotRequest = pilotFrom(request);
+  if (pilotRequest && !pilotRequest.placement) {
+    response.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    response.setHeader('Content-Security-Policy', "default-src 'none'; frame-ancestors 'none'; base-uri 'none'");
+    response.setHeader('X-Content-Type-Options', 'nosniff');
+    response.statusCode = 404;
+    return response.end(request.method === 'HEAD' ? undefined : 'Este enlace no está disponible.');
+  }
+  const placement = pilotRequest?.placement;
+  const variant = placement?.variant ?? variantFrom(request);
+  const google = playStoreFor(variant, placement);
+  const apple = appStoreFor(variant, placement);
   const platform = device(request.headers);
   if (platform === 'ios') {
     response.setHeader('Location', apple);
@@ -133,5 +164,5 @@ export default function handler(request, response) {
   response.setHeader('Content-Security-Policy', "default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'");
   response.setHeader('X-Content-Type-Options', 'nosniff');
   response.statusCode = 200;
-  return response.end(request.method === 'HEAD' ? undefined : downloadPage(google, apple, variant, platform));
+  return response.end(request.method === 'HEAD' ? undefined : downloadPage(google, apple, variant, platform, placement));
 }
