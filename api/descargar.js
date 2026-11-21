@@ -2,6 +2,12 @@ const site = 'https://www.dopmi.org';
 const appStore = 'https://apps.apple.com/mx/app/dopmi/id6468691532';
 const playStore = 'https://play.google.com/store/apps/details?id=com.mycompany.dopmi';
 const variants = new Set(['personal-a', 'personal-b', 'pagina-a', 'pagina-b']);
+const appleCampaigns = new Map([
+  ['personal-a', 'resc_mty_personal_a'],
+  ['personal-b', 'resc_mty_personal_b'],
+  ['pagina-a', 'resc_mty_pagina_a'],
+  ['pagina-b', 'resc_mty_pagina_b'],
+]);
 
 function device(headers) {
   const agent = headers['user-agent'] ?? '';
@@ -42,7 +48,20 @@ function playStoreIntent(google) {
   return `${google.replace(/^https:/, 'intent:')}#Intent;scheme=https;action=android.intent.action.VIEW;package=com.android.vending;S.browser_fallback_url=${encodeURIComponent(google)};end`;
 }
 
-function downloadPage(google, variant, platform) {
+function appStoreFor(variant) {
+  const campaign = appleCampaigns.get(variant);
+  const provider = process.env.APPLE_CAMPAIGN_PROVIDER_TOKEN;
+  if (!campaign || typeof provider !== 'string' || !/^[1-9][0-9]{0,19}$/.test(provider)) return appStore;
+  // App Store Connect reports aggregate campaign downloads and Apple usage.
+  // This does not identify a Dopmi account or attribute its first listing.
+  const store = new URL(appStore);
+  store.searchParams.set('pt', provider);
+  store.searchParams.set('ct', campaign);
+  store.searchParams.set('mt', '8');
+  return store.href;
+}
+
+function downloadPage(google, apple, variant, platform) {
   const pageUrl = `${site}/descargar${variant ? `/${variant}` : ''}`;
   const description = 'Descarga DopMi para publicar mascotas en adopción.';
   const android = platform === 'android';
@@ -52,7 +71,7 @@ function downloadPage(google, variant, platform) {
     ? `<a href="${playStoreIntent(google).replaceAll('&', '&amp;')}">Abrir Google Play</a>
       <a class="secondary" href="${google.replaceAll('&', '&amp;')}">Ver en el navegador</a>`
     : `<a href="${google.replaceAll('&', '&amp;')}">Google Play para Android</a>
-      <a href="${appStore}">App Store para iPhone y iPad</a>`;
+      <a href="${apple.replaceAll('&', '&amp;')}">App Store para iPhone y iPad</a>`;
   return `<!doctype html>
 <html lang="es-MX">
 <head>
@@ -102,9 +121,10 @@ export default function handler(request, response) {
 
   const variant = variantFrom(request);
   const google = playStoreFor(variant);
+  const apple = appStoreFor(variant);
   const platform = device(request.headers);
   if (platform === 'ios') {
-    response.setHeader('Location', appStore);
+    response.setHeader('Location', apple);
     response.statusCode = 302;
     return response.end();
   }
@@ -113,5 +133,5 @@ export default function handler(request, response) {
   response.setHeader('Content-Security-Policy', "default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'");
   response.setHeader('X-Content-Type-Options', 'nosniff');
   response.statusCode = 200;
-  return response.end(request.method === 'HEAD' ? undefined : downloadPage(google, variant, platform));
+  return response.end(request.method === 'HEAD' ? undefined : downloadPage(google, apple, variant, platform));
 }
