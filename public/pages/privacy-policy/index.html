@@ -185,6 +185,7 @@
         <span class="eyebrow">Aviso integral</span>
         <h1>Política de privacidad de Dopmi</h1>
         <p class="meta">Versión privacy-live-2026-11-01-ubicacion-precisa · Fecha de esta versión: 1 de noviembre de 2026</p>
+        <p class="meta">Adenda de medición de anuncios con Meta · meta-ads-2026-11-22 · 22 de noviembre de 2026</p>
 
         <div class="notice">
           Esta política aplica exclusivamente a la nueva aplicación móvil Dopmi para
@@ -274,6 +275,9 @@
               <strong>Analítica de uso opcional:</strong> si confirmas esta elección, medimos eventos básicos de uso, como registro, contacto, pasos y resultados de publicaciones e inicio o confirmación de aportaciones cuando esas funciones estén disponibles. Los eventos de producto que Dopmi envía a Firebase no adjuntan el contenido de mensajes, documentos, fotografías, ubicación precisa, correo ni datos financieros. El SDK de Analytics también trata identificadores de instalación o dispositivo y metadatos técnicos de la app, sesiones y pantallas; puede obtener una zona general a partir de la conexión a internet, sin usar para ello la ubicación precisa de tu teléfono. Por separado, Dopmi puede relacionar con tu cuenta el origen o campaña de llegada y los primeros hitos de una publicación o conversación para evaluar cómo funciona la app y qué difusión ayuda a que más personas publiquen o contacten, sin añadir el contenido de esa conversación a la medición.
             </li>
             <li>
+              <strong>Medición opcional de anuncios con Meta en Android:</strong> si activas «Medición de anuncios con Meta», Dopmi comparte con Meta el identificador de publicidad de Android, las versiones de Dopmi y de Android, y el tipo y la hora de tu primer mensaje elegible como adoptante o de tu primera ficha nueva y válida enviada a revisión desde que activaste esta preferencia. El envío incluye un código aleatorio del evento y el identificador de la app. El contenido de las conversaciones y de las fichas conserva su tratamiento habitual en Dopmi.
+            </li>
+            <li>
               <strong>Elecciones de medición:</strong> Dopmi conserva tu elección de analítica de uso, la versión del aviso y la fecha de tu acción, vinculadas a tu cuenta, para respetar y acreditar esa elección. El diagnóstico de errores y, cuando esté disponible, la medición de publicaciones se controlan por separado.
             </li>
             <li>
@@ -321,9 +325,18 @@
             publicaciones conservan sus controles independientes; no se activan
             al confirmar Analítica de uso y permanecen apagados hasta que elijas
             activarlos. Puedes cambiar o retirar cada elección desde los ajustes de
-            privacidad de tu perfil, sin perder las funciones principales. Dopmi no
-            usa tus datos personales para publicidad dirigida ni los vende.
+            privacidad de tu perfil, sin perder las funciones principales.
           </p>
+          <p>
+            La medición de anuncios con Meta en Android es una elección opcional
+            e independiente de Analítica de uso, del diagnóstico de errores y de
+            la medición de publicaciones. Comienza apagada y se activa mediante
+            su propio interruptor en Cuenta y privacidad. Si la activas, Meta
+            utiliza los datos descritos para atribuir resultados y optimizar la
+            entrega de anuncios de Dopmi. Puedes desactivarla en cualquier momento
+            y seguir usando las funciones principales.
+          </p>
+          <p>Dopmi no vende datos personales.</p>
         </section>
 
         <section id="visibilidad">
@@ -353,7 +366,7 @@
             <li>Cuando los videos estén habilitados, <strong>Cloudflare Stream</strong> se utilizará para la carga, el procesamiento y la reproducción de videos y sus pósters. Los videos y pósters requieren moderación y aprobación antes de publicarse. Los comprobantes y las evidencias privados conservan el acceso autorizado.</li>
             <li><strong>Google y Apple:</strong> autenticación cuando eliges una de esas opciones y está disponible.</li>
             <li><strong>Mapas y búsqueda de zonas:</strong> Google Maps muestra el mapa interactivo cuando lo abres y puede recibir el punto preciso, la vista del mapa, tu consulta, dirección IP e información técnica conforme a sus políticas. Para identificar ciudad y estado también se utiliza la geocodificación del dispositivo, proporcionada por Google o Apple, que recibe el punto seleccionado. Estas consultas no incorporan mensajes, documentos ni datos financieros. Al publicar puedes colocar el punto manualmente sin activar el GPS.</li>
-            <li><strong>Facebook e Instagram (Meta):</strong> autorización y consulta de los datos descritos para comprobar una conexión social, cuando esa función esté disponible y decidas usarla. Puedes revisar sus propios controles de permisos.</li>
+            <li><strong>Facebook e Instagram (Meta):</strong> autorización y consulta de los datos descritos para comprobar una conexión social, cuando esa función esté disponible y decidas usarla. Puedes revisar sus propios controles de permisos. Por separado, si activas «Medición de anuncios con Meta» en Android, Meta recibe los datos de esa medición para atribuir resultados y optimizar la entrega de anuncios de Dopmi. Consulta también la <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener noreferrer">Política de privacidad de Meta</a>.</li>
             <li><strong>Twilio:</strong> entrega de SMS mediante la configuración de Supabase Auth acreditada en la configuración de pruebas comprobada. Esta descripción no afirma que sea el proveedor de otros entornos.</li>
             <li><strong>Firebase (Google):</strong> Analytics para eventos de uso y Crashlytics para errores y trazas técnicas, conforme a tus elecciones separadas de medición. Estos servicios no sustituyen a Supabase como autenticación o base de datos del producto.</li>
             <li><strong>PostHog:</strong> si activas la medición de publicaciones, recibe los pasos y resultados del formulario de adopción, la hora, la plataforma, el entorno de la app y un código aleatorio por intento. No recibe el identificador de tu cuenta, el texto de la ficha, fotografías, ubicación ni grabaciones de pantalla. Puedes apagar esta medición en los ajustes de privacidad.</li>
@@ -372,6 +385,7 @@
 
         <section id="conservacion">
           <h2>7. Conservación y eliminación</h2>
+          <p>Para la medición de anuncios con Meta, Dopmi elimina de su cola el identificador publicitario y las versiones técnicas al completar la entrega o retirar el permiso. Las señales pendientes con más de 24 horas se descartan y sus contextos se eliminan mediante la limpieza periódica. Se conserva una marca interna por cuenta y tipo de evento para evitar repetir la señal. Una solicitud ya despachada puede completarse después de desactivar la preferencia. Meta trata los datos que ya recibió conforme a su propia política.</p>
           <p>La comprobación social conectada se conserva separada de los intentos de conexión hasta que se retire o se elimine mediante el flujo aplicable. En la configuración de pruebas comprobada hay una limpieza periódica de intentos vencidos hace más de 24 horas y de comprobantes operacionales vencidos. Esta limpieza no elimina las comprobaciones vigentes ni las cuentas y no garantiza un plazo máximo de eliminación en todos los sistemas o respaldos.</p>
           <p>La credencial temporal recibida de la red social se utiliza en el servidor para consultar esos datos y no se incluye en el comprobante privado de conexión que Dopmi guarda. Esto no describe su conservación en los sistemas del proveedor, registros técnicos o copias de respaldo.</p>
           <ul>
