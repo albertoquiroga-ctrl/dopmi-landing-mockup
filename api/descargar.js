@@ -1,7 +1,17 @@
 import { readFileSync } from 'node:fs';
 
 const pilot = JSON.parse(readFileSync(new URL('../config/rescuer-pilot-60-v1.json', import.meta.url), 'utf8'));
-const pilotPlacements = new Map(pilot.placements.map((placement) => [placement.token, placement]));
+const wave2 = JSON.parse(readFileSync(new URL('../config/rescuer-wave2-24-v1.json', import.meta.url), 'utf8'));
+const pilotPlacements = new Map();
+for (const [manifest, appleCampaignPrefix] of [
+  [pilot, 'resc_mty_p60_v1'],
+  [wave2, wave2.appleCampaignPrefix],
+]) {
+  for (const placement of manifest.placements) {
+    if (pilotPlacements.has(placement.token)) throw new Error('Duplicate campaign placement token');
+    pilotPlacements.set(placement.token, { ...placement, utmCampaign: manifest.utmCampaign, appleCampaignPrefix });
+  }
+}
 const site = 'https://www.dopmi.org';
 const appStore = 'https://apps.apple.com/mx/app/dopmi/id6468691532';
 const playStore = 'https://play.google.com/store/apps/details?id=com.mycompany.dopmi';
@@ -56,7 +66,7 @@ function playStoreFor(variant, placement) {
   store.searchParams.set('referrer', new URLSearchParams({
     utm_source: 'facebook',
     utm_medium: 'organic_comment',
-    utm_campaign: placement ? pilot.utmCampaign : `dopmi_rescatistas_mty_${variant}`,
+    utm_campaign: placement ? placement.utmCampaign : `dopmi_rescatistas_mty_${variant}`,
     utm_content: placement ? placement.token : variant,
   }).toString());
   return store.href;
@@ -68,7 +78,7 @@ function playStoreIntent(google) {
 
 function appStoreFor(variant, placement) {
   const campaign = placement
-    ? `resc_mty_p60_v1_${placement.armId.toLowerCase()}${placement.isQa ? '_qa' : ''}`
+    ? `${placement.appleCampaignPrefix}_${placement.armId.toLowerCase()}${placement.isQa ? '_qa' : ''}`
     : appleCampaigns.get(variant);
   const provider = process.env.APPLE_CAMPAIGN_PROVIDER_TOKEN;
   if (!campaign || typeof provider !== 'string' || !/^[1-9][0-9]{0,19}$/.test(provider)) return appStore;
