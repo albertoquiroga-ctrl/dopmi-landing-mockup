@@ -41,7 +41,7 @@ function expectedReferrer(placement) {
 }
 
 test('wave2 is frozen separately with 24 unique placements and species-balanced randomized arm blocks', () => {
-  assert.equal(createHash('sha256').update(bytes).digest('hex'), 'c9ae0a81c466d9301a6aaeb6a0a109c5b974f3b9329b345eb03931bd0b1b71a7');
+  assert.equal(createHash('sha256').update(bytes.toString('utf8').replaceAll('\r\n', '\n')).digest('hex'), 'c9ae0a81c466d9301a6aaeb6a0a109c5b974f3b9329b345eb03931bd0b1b71a7');
   assert.equal(wave.experimentId, 'resc_mty_20261122_wave2_v1');
   assert.equal(wave.utmCampaign, original.utmCampaign);
   assert.equal(wave.copyVersion, 'v1');

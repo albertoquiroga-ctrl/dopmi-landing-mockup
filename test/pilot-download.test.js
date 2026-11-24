@@ -55,7 +55,8 @@ function expectedApple(placement) {
 }
 
 test('the canonical pilot manifest is unchanged, balanced and contains no social identifiers', () => {
-  assert.equal(createHash('sha256').update(manifestBytes).digest('hex'), 'edcf94d92aa3af4e17e98a73797b20c15ad96df5b9742608342018a50ada7e5a');
+  // The frozen reference used CRLF; normalize checkout line endings only.
+  assert.equal(createHash('sha256').update(manifestBytes.toString('utf8').replace(/\r?\n/g, '\r\n')).digest('hex'), 'edcf94d92aa3af4e17e98a73797b20c15ad96df5b9742608342018a50ada7e5a');
   assert.equal(manifest.schemaVersion, 1);
   assert.equal(manifest.experimentId, 'resc_mty_20261121_p60_v1');
   assert.equal(manifest.utmCampaign, 'dopmi_rescatistas_mty_p60_v1');

@@ -2,10 +2,12 @@ import { readFileSync } from 'node:fs';
 
 const pilot = JSON.parse(readFileSync(new URL('../config/rescuer-pilot-60-v1.json', import.meta.url), 'utf8'));
 const wave2 = JSON.parse(readFileSync(new URL('../config/rescuer-wave2-24-v1.json', import.meta.url), 'utf8'));
+const wave3 = JSON.parse(readFileSync(new URL('../config/rescuer-wave3-48-v2.json', import.meta.url), 'utf8'));
 const pilotPlacements = new Map();
 for (const [manifest, appleCampaignPrefix] of [
   [pilot, 'resc_mty_p60_v1'],
   [wave2, wave2.appleCampaignPrefix],
+  [wave3, wave3.appleCampaignPrefix],
 ]) {
   for (const placement of manifest.placements) {
     if (pilotPlacements.has(placement.token)) throw new Error('Duplicate campaign placement token');
