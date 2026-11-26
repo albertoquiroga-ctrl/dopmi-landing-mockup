@@ -187,6 +187,7 @@
         <p class="meta">Versión privacy-live-2026-11-01-ubicacion-precisa · Fecha de esta versión: 1 de noviembre de 2026</p>
         <p class="meta">Adenda de medición de anuncios con Meta · meta-ads-2026-11-22 · 22 de noviembre de 2026</p>
         <p class="meta">Adenda de instalaciones y aperturas con Meta · meta-lifecycle-2026-11-24 · 24 de noviembre de 2026</p>
+        <p class="meta">Actualización de reportes de adopciones · adoption-reports-2026-11-26 · 26 de noviembre de 2026</p>
 
         <div class="notice">
           Esta política aplica exclusivamente a la nueva aplicación móvil Dopmi para
@@ -246,6 +247,9 @@
             </li>
             <li>
               <strong>Recorrido de descubrimiento:</strong> identificadores de las mascotas que ya viste y fecha de registro, asociados a tu cuenta para evitar repeticiones entre tus dispositivos. «Volver a descubrir» reinicia este recorrido. Este dato funcional no incluye tu ubicación ni activa la medición opcional.
+            </li>
+            <li>
+              <strong>Reportes de actividad de adopciones:</strong> en las versiones actualizadas de la app, al abrir el detalle de una mascota publicada con tu sesión iniciada, Dopmi registra automáticamente el identificador de tu cuenta, el de la mascota y la fecha de tu primera visita. Cuenta una sola vez por cuenta y mascota, excluye las visitas del autor y no reconstruye visitas anteriores. El reporte administrativo también muestra totales de favoritos vigentes, personas que iniciaron contacto y primeras respuestas del rescatista, calculados con los registros operativos de esas funciones. No permite al administrador leer conversaciones privadas. Estos registros se conservan en Supabase; esta función no los envía a Firebase ni a Meta y opera independientemente de la analítica opcional. Las nuevas observaciones de visitas se eliminan al eliminar tu cuenta.
             </li>
             <li>
               <strong>Comunicaciones:</strong> mensajes entre participantes,
@@ -317,19 +321,27 @@
             <li>Atender soporte, solicitudes de privacidad, disputas y seguridad.</li>
             <li>Cumplir obligaciones legales y responder a requerimientos válidos.</li>
           </ul>
+          <h3>Reportes de actividad de adopciones</h3>
+          <p>
+            Dopmi utiliza los conteos de visitas únicas al detalle, favoritos vigentes,
+            contactos y primeras respuestas para que la administración evalúe el
+            funcionamiento de las publicaciones de adopción. Este reporte funciona
+            automáticamente en las versiones actualizadas y no activa los servicios
+            opcionales de analítica, diagnóstico o medición publicitaria.
+          </p>
           <h3>Finalidades opcionales</h3>
           <p>
             La ubicación precisa se usa sólo si la autorizas para descubrir
             adopciones cercanas o centrar el mapa al publicar. Si no autorizas la ubicación
             o está apagada, el listado de adopciones queda vacío y los demás apartados
             siguen disponibles. Para una publicación puedes colocar el punto manualmente.
-            La analítica de uso es opcional. Para quienes aún no tengan una
-            elección registrada, puede aparecer preseleccionada en la pantalla de
-            elección. Esa selección es una propuesta: no activa la recopilación.
-            Sólo comienza cuando confirmas la elección con la opción marcada.
-            Puedes desmarcarla y continuar sin activarla. Aceptar los Términos y
-            Condiciones no activa esta medición. Si ya la desactivaste, respetamos
-            tu elección y no la reactivamos por actualizar la app.
+            La analítica de uso con Firebase es opcional. Puedes activarla o
+            desactivarla en Cuenta y privacidad. Para una cuenta sin elección
+            registrada comienza apagada. Descargar la app, aceptar los Términos y
+            Condiciones o consultar este aviso no la activa. Las versiones
+            actualizadas no requieren una pantalla inicial de elección de analítica.
+            Respetamos las elecciones ya registradas y no las cambiamos por
+            actualizar la app.
             El diagnóstico de errores y, cuando esté disponible, la medición de
             publicaciones conservan sus controles independientes; no se activan
             al confirmar Analítica de uso y permanecen apagados hasta que elijas
